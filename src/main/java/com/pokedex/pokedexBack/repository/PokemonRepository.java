@@ -15,7 +15,7 @@ public interface PokemonRepository extends JpaRepository<Pokemon, Integer> {
     public List<Pokemon> findByNombre(String nombre);
 
     public List<Pokemon> findByNombreStartsWith(String nombre);
-
+    public List<Pokemon> findAllByOrderByIdAsc();
     @Query("select max(p.id) from Pokemon p")
     public Integer findMaxId();
 }

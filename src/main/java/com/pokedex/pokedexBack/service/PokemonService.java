@@ -3,6 +3,8 @@ package com.pokedex.pokedexBack.service;
 import com.pokedex.pokedexBack.entity.Pokemon;
 import com.pokedex.pokedexBack.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,7 +32,7 @@ public class PokemonService {
     }
 
     public List<Pokemon> readPokemons(){
-        return pokemonRepository.findAll();
+        return pokemonRepository.findAllByOrderByIdAsc();
     }
 
     public Optional<Pokemon> readPokemon(Integer pokemonId){
@@ -65,9 +67,9 @@ public class PokemonService {
 
     @Transactional
     public String deletePokemon(Pokemon pokemon){
-        if (pokemonRepository.existsByNombre(pokemon.getNombre())){
+        if (pokemonRepository.existsById(pokemon.getId())){
             try {
-                List<Pokemon> pokemons = pokemonRepository.findByNombre(pokemon.getNombre());
+                Optional<Pokemon> pokemons = pokemonRepository.findById(pokemon.getId());
                 pokemons.stream().forEach(p -> {
                     pokemonRepository.delete(p);
                 });
