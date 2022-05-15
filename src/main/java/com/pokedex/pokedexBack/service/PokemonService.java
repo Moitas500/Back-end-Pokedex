@@ -19,7 +19,6 @@ public class PokemonService {
     public String createPokemon(Pokemon pokemon){
         try {
             if (!pokemonRepository.existsByNombre(pokemon.getNombre())){
-                pokemon.setId(pokemonRepository.findMaxId() + 1);
                 pokemonRepository.save(pokemon);
                 return "Pokemon fue creado correctamente";
             } else {
@@ -52,7 +51,8 @@ public class PokemonService {
                     pokemonQueSeActualiza.setNombre(pokemon.getNombre());
                     pokemonQueSeActualiza.setAltura(pokemon.getAltura());
                     pokemonQueSeActualiza.setPeso(pokemon.getPeso());
-                    pokemonQueSeActualiza.seturlImg(pokemon.geturlImg());
+                    pokemonQueSeActualiza.setUrlImg(pokemon.getUrlImg());
+                    pokemonQueSeActualiza.setTipo(pokemon.getTipo());
                 });
                 return "Pokemon actualizado correctamente.";
             } catch (Exception e){

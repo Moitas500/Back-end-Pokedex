@@ -1,7 +1,7 @@
 package com.pokedex.pokedexBack.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Pokemon {
@@ -12,6 +12,14 @@ public class Pokemon {
     private double altura;
     private double peso;
     private String urlImg;
+
+    @ManyToMany()
+    @JoinTable(
+            name = "tipo_id",
+            joinColumns = @JoinColumn(name = "pokemon_id"),
+            inverseJoinColumns = @JoinColumn(name = "tipo_id")
+    )
+    private Set<Tipo> tipo;
 
     public Pokemon() {
     }
@@ -48,12 +56,20 @@ public class Pokemon {
         this.peso = peso;
     }
 
-    public String geturlImg() {
+    public String getUrlImg() {
         return urlImg;
     }
 
-    public void seturlImg(String urlImg) {
+    public void setUrlImg(String urlImg) {
         this.urlImg = urlImg;
+    }
+
+    public Set<Tipo> getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Set<Tipo> tipo) {
+        this.tipo = tipo;
     }
 
     @Override
@@ -63,7 +79,8 @@ public class Pokemon {
                 ", nombre='" + nombre + '\'' +
                 ", altura=" + altura +
                 ", peso=" + peso +
-                ", urlImg=" + urlImg +
+                ", urlImg='" + urlImg + '\'' +
+                ", tipo=" + tipo +
                 '}';
     }
 }
