@@ -18,15 +18,16 @@ public class PokemonService {
     private PokemonRepository pokemonRepository;
 
     @Transactional
-    public String createPokemon(Pokemon pokemon){
+    public Pokemon createPokemon(Pokemon pokemon) throws Exception {
         try {
             if (!pokemonRepository.existsByNombre(pokemon.getNombre())){
                 pokemonRepository.save(pokemon);
-                return "Pokemon fue creado correctamente";
+                return pokemon;
             } else {
-                return "Pokemon existe actualmente en la base de datos";
+                throw new Exception();
             }
         } catch (Exception e){
+            e.printStackTrace();
             throw e;
         }
     }
@@ -44,41 +45,38 @@ public class PokemonService {
     }
 
     @Transactional
-    public String updatePokemon(Pokemon pokemon){
-        if (pokemonRepository.existsByNombre(pokemon.getNombre())){
+    public Pokemon updatePokemon(Pokemon pokemon) throws Exception {
+        if (pokemonRepository.existsById(pokemon.getId())){
             try {
-                List<Pokemon> pokemons = pokemonRepository.findByNombre(pokemon.getNombre());
-                pokemons.stream().forEach(p -> {
-                    Pokemon pokemonQueSeActualiza = pokemonRepository.findById(p.getId()).get();
-                    pokemonQueSeActualiza.setNombre(pokemon.getNombre());
-                    pokemonQueSeActualiza.setAltura(pokemon.getAltura());
-                    pokemonQueSeActualiza.setPeso(pokemon.getPeso());
-                    pokemonQueSeActualiza.setUrlImg(pokemon.getUrlImg());
-                    pokemonQueSeActualiza.setTipo(pokemon.getTipo());
-                });
-                return "Pokemon actualizado correctamente.";
+                Pokemon pokemonQueSeActualiza = pokemonRepository.findById(pokemon.getId()).get();
+                pokemonQueSeActualiza.setNombre(pokemon.getNombre());
+                pokemonQueSeActualiza.setAltura(pokemon.getAltura());
+                pokemonQueSeActualiza.setPeso(pokemon.getPeso());
+                pokemonQueSeActualiza.setUrlImg(pokemon.getUrlImg());
+                pokemonQueSeActualiza.setTipo(pokemon.getTipo());
+                return pokemonQueSeActualiza;
             } catch (Exception e){
                 throw e;
             }
         } else {
-            return "Pokemon no existe en la base datos";
+            throw new Exception();
         }
     }
 
     @Transactional
-    public String deletePokemon(Pokemon pokemon){
+    public Pokemon deletePokemon(Pokemon pokemon) throws Exception {
         if (pokemonRepository.existsById(pokemon.getId())){
             try {
                 Optional<Pokemon> pokemons = pokemonRepository.findById(pokemon.getId());
                 pokemons.stream().forEach(p -> {
                     pokemonRepository.delete(p);
                 });
-                return "Pokemon eliminado correctamente.";
+                return pokemon;
             } catch (Exception e){
                 throw e;
             }
         } else {
-            return "Pokemon no existe en la base datos";
+            throw new Exception();
         }
     }
 }

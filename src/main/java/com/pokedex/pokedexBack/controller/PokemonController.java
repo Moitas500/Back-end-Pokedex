@@ -21,7 +21,7 @@ public class PokemonController {
     }
 
     @RequestMapping(value = "createPokemon", method = RequestMethod.POST)
-    public String createPokemon(@RequestBody Pokemon pokemon){
+    public Pokemon createPokemon(@RequestBody Pokemon pokemon) throws Exception {
         return pokemonService.createPokemon(pokemon);
     }
 
@@ -41,12 +41,12 @@ public class PokemonController {
     }
 
     @RequestMapping(value = "updatePokemon", method = RequestMethod.PUT)
-    public String updatePokemon(@RequestBody Pokemon pokemon){
+    public Pokemon updatePokemon(@RequestBody Pokemon pokemon) throws Exception {
         return pokemonService.updatePokemon(pokemon);
     }
 
     @RequestMapping(value = "deletePokemon", method = RequestMethod.DELETE)
-    public String deletePokemon(@RequestBody Pokemon pokemon){
+    public Pokemon deletePokemon(@RequestBody Pokemon pokemon) throws Exception{
         return pokemonService.deletePokemon(pokemon);
     }
 }
